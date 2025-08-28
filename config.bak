@@ -1,0 +1,362 @@
+include /etc/sway/config.d/*
+
+set $m Mod4
+set $sft Shift
+set $disp1 DP-3
+set $disp2 HDMI-A-1
+set $disp3 eDP-1
+
+set $left h
+set $down j
+set $up k
+set $right l
+
+set $alt_left Left
+set $alt_down Down
+set $alt_up Up
+set $alt_right Right
+
+set $1 1
+set $2 2
+set $3 3
+set $4 4
+set $5 5
+set $6 6
+set $7 7
+set $8 8
+set $9 9
+set $10 0
+
+set $11 F1
+set $12 F2
+set $13 F3
+set $14 F4
+set $15 F5
+set $16 F6
+set $17 F7
+set $18 F8
+set $19 F9
+set $20 F10
+set $21 F11
+set $22 F12
+
+set $alt_1 apostrophe
+set $alt_2 comma
+set $alt_3 period
+set $alt_4 p
+set $alt_5 y
+set $alt_6 f
+set $alt_7 g
+set $alt_8 c
+set $alt_9 r
+set $alt_10 s
+
+
+
+# reload the configuration file
+bindsym $m+$sft+v reload
+# exit sway
+bindsym $m+$sft+b exec swaymsg exit
+
+bindsym $m+w mode "resize"
+
+## Apps
+bindsym $m+e exec tofi-drun | xargs swaymsg exec --
+
+bindsym $m+$sft+minus exec systemctl poweroff
+bindsym $m+$sft+a exec discord
+bindsym $m+$sft+e exec foot
+bindsym $m+o exec qutebrowser
+bindsym $m+$sft+o exec firefox
+bindsym $m+$sft+u exec signal-desktop
+bindsym $m+$sft+d exec foot --working-directory=audio/lib -e cmus
+
+## Dimming
+bindsym $m+d exec sh $HOME/.config/sway/dimming.sh
+
+## Screenshots
+bindsym Ctrl+Print exec grim
+bindsym Ctrl+Mod1+Print exec grim -g "$(swaymsg -t get_tree | jq -j '.. | select(.type?) | select(.focused).rect | "\(.x),\(.y) \(.width)x\(.height)"')"
+bindsym Ctrl+$sft+Print exec grim -g "$(slurp)"
+
+## Clipboard Screenshots
+bindsym Print exec grim - | wl-copy
+bindsym Mod1+Print exec grim -g "$(swaymsg -t get_tree | jq -j '.. | select(.type?) | select(.focused).rect | "\(.x),\(.y) \(.width)x\(.height)"')" - | wl-copy
+bindsym $sft+Print exec grim -g "$(slurp)" - | wl-copy
+
+## Media
+bindsym XF86AudioPlay exec playerctl play-pause
+bindsym XF86AudioPause exec playerctl pause
+bindsym XF86AudioNext exec playerctl next
+bindsym XF86AudioPrev exec playerctl previous
+
+# Use pactl to adjust volume in PulseAudio.
+set $refresh_i3status killall -SIGUSR1 i3status
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5% && $refresh_i3status
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -5% && $refresh_i3status
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
+bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
+
+# Change brightness
+bindsym XF86MonBrightnessUp exec brightnessctl -d intel_backlight -e set 5%+
+bindsym XF86MonBrightnessDown exec brightnessctl -d intel_backlight -e set 5%-
+bindsym XF86KbdBrightnessUp exec brightnessctl -d :white:kbd_backlight -e set 10%+
+bindsym XF86KbdBrightnessDown exec brightnessctl -d :white:kbd_backlight -e set 10%-
+
+# Use Mouse+$m to drag floating windows to their wanted position
+floating_modifier $m
+
+# kill focused window
+bindsym $m+$sft+i kill
+
+# change focus
+# QWERTY j, k, l, ;
+bindsym $m+$left focus left
+bindsym $m+$down focus down
+bindsym $m+$up focus up
+bindsym $m+$right focus right
+
+# alternatively, you can use the cursor keys:
+bindsym $m+$alt_left focus left
+bindsym $m+$alt_down focus down
+bindsym $m+$alt_up focus up
+bindsym $m+$alt_right focus right
+
+# move focused window
+bindsym $m+$sft+$left move left
+bindsym $m+$sft+$down move down
+bindsym $m+$sft+$up move up
+bindsym $m+$sft+$right move right
+
+# alternatively, you can use the cursor keys:
+bindsym $m+$sft+$alt_left move left
+bindsym $m+$sft+$alt_down move down
+bindsym $m+$sft+$alt_up move up
+bindsym $m+$sft+$alt_right move right
+
+default_orientation horizontal
+hide_edge_borders smart
+
+# split in horizontal orientation
+bindsym $m+q split h
+
+# split in vertical orientation
+bindsym $m+semicolon split v
+
+# enter fullscreen mode for the focused container
+bindsym $m+u fullscreen toggle
+
+# change container layout (stacking, tabbed, toggle split)
+bindsym $m+t focus parent
+bindsym $m+n focus child
+bindsym $m+$sft+semicolon layout stacking
+bindsym $m+$sft+q layout toggle split
+
+# toggle tiling / floating
+bindsym $m+$sft+space floating toggle
+
+# change focus between tiling / floating windows
+bindsym $m+space focus mode_toggle
+
+bindsym $m+z scratchpad show
+bindsym $m+$sft+z move scratchpad
+
+exec sh $HOME/.config/sway/lock.sh
+
+default_dim_inactive 0.2
+
+# Define names for default workspaces for which we configure key bindings later on.
+# We use variables to avoid repeating the names in multiple places.
+set $ws1 1
+set $ws2 2
+set $ws3 3
+set $ws4 4
+set $ws5 5
+set $ws6 6
+set $ws7 7
+set $ws8 8
+set $ws9 9
+set $ws10 10
+
+set $ws11 11
+set $ws12 12
+set $ws13 13
+set $ws14 14
+set $ws15 15
+set $ws16 16
+set $ws17 17
+set $ws18 18
+set $ws19 19
+set $ws20 20
+set $ws21 21
+set $ws22 22
+
+# switch to workspace
+bindsym $m+$1 workspace number $ws1
+bindsym $m+$2 workspace number $ws2
+bindsym $m+$3 workspace number $ws3
+bindsym $m+$4 workspace number $ws4
+bindsym $m+$5 workspace number $ws5
+bindsym $m+$6 workspace number $ws6
+bindsym $m+$7 workspace number $ws7
+bindsym $m+$8 workspace number $ws8
+bindsym $m+$9 workspace number $ws9
+bindsym $m+$10 workspace number $ws10
+
+bindsym $m+$11 workspace number $ws11
+bindsym $m+$12 workspace number $ws12
+bindsym $m+$13 workspace number $ws13
+bindsym $m+$14 workspace number $ws14
+bindsym $m+$15 workspace number $ws15
+bindsym $m+$16 workspace number $ws16
+bindsym $m+$17 workspace number $ws17
+bindsym $m+$18 workspace number $ws18
+bindsym $m+$19 workspace number $ws19
+bindsym $m+$20 workspace number $ws20
+bindsym $m+$21 workspace number $ws21
+bindsym $m+$22 workspace number $ws22
+
+bindsym $m+$alt_1 workspace number $ws1
+bindsym $m+$alt_2 workspace number $ws2
+bindsym $m+$alt_3 workspace number $ws3
+bindsym $m+$alt_4 workspace number $ws4
+bindsym $m+$alt_5 workspace number $ws5
+bindsym $m+$alt_6 workspace number $ws6
+bindsym $m+$alt_7 workspace number $ws7
+bindsym $m+$alt_8 workspace number $ws8
+bindsym $m+$alt_9 workspace number $ws9
+bindsym $m+$alt_10 workspace number $ws10
+
+# move focused container to workspace
+bindsym $m+$sft+$1 move container to workspace number $ws1
+bindsym $m+$sft+$2 move container to workspace number $ws2
+bindsym $m+$sft+$3 move container to workspace number $ws3
+bindsym $m+$sft+$4 move container to workspace number $ws4
+bindsym $m+$sft+$5 move container to workspace number $ws5
+bindsym $m+$sft+$6 move container to workspace number $ws6
+bindsym $m+$sft+$7 move container to workspace number $ws7
+bindsym $m+$sft+$8 move container to workspace number $ws8
+bindsym $m+$sft+$9 move container to workspace number $ws9
+bindsym $m+$sft+$10 move container to workspace number $ws10
+
+bindsym $m+$sft+$11 move container to workspace number $ws11
+bindsym $m+$sft+$12 move container to workspace number $ws12
+bindsym $m+$sft+$13 move container to workspace number $ws13
+bindsym $m+$sft+$14 move container to workspace number $ws14
+bindsym $m+$sft+$15 move container to workspace number $ws15
+bindsym $m+$sft+$16 move container to workspace number $ws16
+bindsym $m+$sft+$17 move container to workspace number $ws17
+bindsym $m+$sft+$18 move container to workspace number $ws18
+bindsym $m+$sft+$19 move container to workspace number $ws19
+bindsym $m+$sft+$20 move container to workspace number $ws20
+bindsym $m+$sft+$21 move container to workspace number $ws21
+bindsym $m+$sft+$22 move container to workspace number $ws22
+
+bindsym $m+$sft+$alt_1 move container to workspace number $ws1
+bindsym $m+$sft+$alt_2 move container to workspace number $ws2
+bindsym $m+$sft+$alt_3 move container to workspace number $ws3
+bindsym $m+$sft+$alt_4 move container to workspace number $ws4
+bindsym $m+$sft+$alt_5 move container to workspace number $ws5
+bindsym $m+$sft+$alt_6 move container to workspace number $ws6
+bindsym $m+$sft+$alt_7 move container to workspace number $ws7
+bindsym $m+$sft+$alt_8 move container to workspace number $ws8
+bindsym $m+$sft+$alt_9 move container to workspace number $ws9
+bindsym $m+$sft+$alt_10 move container to workspace number $ws10
+
+# resize window (you can also use the mouse for that)
+mode "resize" {
+	bindsym $left resize shrink width 10 px or 10 ppt
+	bindsym $down resize grow height 10 px or 10 ppt
+	bindsym $up resize shrink height 10 px or 10 ppt
+	bindsym $right resize grow width 10 px or 10 ppt
+
+	bindsym $alt_left resize shrink width 10 px or 10 ppt
+	bindsym $alt_down resize grow height 10 px or 10 ppt
+	bindsym $alt_up resize shrink height 10 px or 10 ppt
+	bindsym $alt_right resize grow width 10 px or 10 ppt
+
+	bindsym Return mode "default"
+	bindsym Escape mode "default"
+	bindsym $m+w mode "default"
+}
+
+bar {
+	status_command i3status
+	mode dock
+	# mode hide
+}
+
+# General conf
+focus_wrapping no
+
+input "type:keyboard" {
+	xkb_options compose:menu,caps:escape
+	repeat_delay 300
+	repeat_rate 30
+}
+
+input "type:touchpad" {
+	natural_scroll disabled
+	tap enabled
+	accel_profile "flat"
+	pointer_accel 0.8
+}
+
+## aesthetics
+default_border pixel 1
+default_floating_border pixel 1
+titlebar_border_thickness 0
+
+seat seat0 xcursor_theme Vimix-cursors 24
+
+output $disp1 {
+	resolution 2560x1440
+	position 1707,0
+}
+output $disp2 {
+	resolution 1366x768
+	position 0,0
+	scale 0.8
+}
+
+output $disp3 {
+	scale 1
+}
+
+output * {
+	bg /home/main/pictures/wallpapers/man-in-space.png fill
+	# bg "#000000" solid_color
+}
+
+workspace $ws1 output $disp1
+workspace $ws2 output $disp1
+workspace $ws3 output $disp1
+workspace $ws4 output $disp1
+workspace $ws5 output $disp1
+workspace $ws6 output $disp2
+workspace $ws7 output $disp2
+workspace $ws8 output $disp2
+workspace $ws9 output $disp2
+workspace $ws10 output $disp2
+
+font pango:monospace 8
+
+set $prime #403070
+set $accnt #723ee4
+#						border	bg		text	indic   child
+# client.focused		#4c7899 #285577 #ffffff #2e9ef4 #285577
+client.focused 			$prime	$prime	#eeeeee $accnt	$prime
+# client.unfocused		$prime	$prime	#eeeeee $accnt	$prime
+# client.focused_inactive	$prime	$prime	#eeeeee $accnt	$prime
+
+# Launch
+exec brightnessctl -d intel_backlight set 50%
+exec brightnessctl -d :white:kbd_backlight set 0
+
+assign [app_id="cmus"] "10"
+for_window [app_id="org.keepassxc.KeePassXC"] {
+	move scratchpad
+}
+
+exec swaymsg 'workspace 8'
+exec sh $HOME/.config/sway/app-init.sh
