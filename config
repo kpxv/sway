@@ -111,7 +111,7 @@ font pango:monospace 8
 
 ## Outputs
 output * {
-	bg /home/main/image/art/logo/zelda-navi.png fill
+	bg /home/main/image/art/scene/fireeye-tower.jpg fill
 }
 output $disp0 {
 	resolution 2560x1440
