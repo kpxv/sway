@@ -141,7 +141,7 @@ bar {
 
 ## Inputs
 input "type:keyboard" {
-	xkb_options compose:menu,caps:escape
+	xkb_options compose:menu,compose:ralt,caps:escape
 	repeat_delay 300
 	repeat_rate 30
 }
