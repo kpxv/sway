@@ -111,7 +111,8 @@ font pango:monospace 8
 
 ## Outputs
 output * {
-	bg /home/main/image/art/scene/fireeye-tower.jpg fill
+	# bg /home/main/image/art/person/man-in-space.png fill
+	bg /home/main/image/art/person/dsouls.jpg fill
 }
 output $disp0 {
 	resolution 2560x1440
@@ -122,6 +123,7 @@ output $disp1 {
 	resolution 1366x768
 	position 2560,0
 	scale 0.8
+    # transform 270
 	# bg /home/main/image/bg/warfarin-l.png fill
 }
 output $disp2 {
@@ -185,6 +187,7 @@ focus_wrapping no
 bindsym $m+$sft+v reload
 bindsym $m+$sft+b exec swaymsg exit
 bindsym $m+$sft+minus exec systemctl poweroff
+bindsym $m+Ctrl+r transform 90
 
 
 ## Windows — Navigation
@@ -263,8 +266,6 @@ bindsym $m+$sft+$20 move container to workspace number $ws20
 bindsym $m+$sft+$21 move container to workspace number $ws21
 bindsym $m+$sft+$22 move container to workspace number $ws22
 
-bindsym $m+$sft+z move scratchpad
-
 
 ## Layout — Navigation
 bindsym $m+t focus parent
@@ -280,6 +281,7 @@ bindsym $m+u fullscreen toggle
 bindsym $m+$sft+space floating toggle
 bindsym $m+$sft+q layout toggle split
 bindsym $m+$sft+semicolon layout stacking
+bindsym $m+$sft+z layout tabbed
 
 bindsym $m+w mode "resize"
 mode "resize" {
@@ -302,7 +304,7 @@ mode "resize" {
 ## Apps — Launcher
 bindsym $m+e exec tofi-drun | xargs swaymsg exec --
 
-bindsym $m+$sft+a exec discord
+bindsym $m+$sft+a exec vesktop
 bindsym $m+$sft+e exec foot
 bindsym $m+o exec qutebrowser
 bindsym $m+$sft+o exec firefox
